@@ -1,0 +1,36 @@
+---
+# defaults file for bvansomeren.freebsd-mysql
+
+freebsd_mysql_service: "mysql-server"
+
+freebsd_mysql_version: "57"
+freebsd_mysql_packages:
+- "mysql{{ freebsd_mysql_version }}-server"
+- "mysql{{ freebsd_mysql_version }}-client"
+- "{{ freebsd_mysql_extra_utilities }}"
+
+freebsd_mysql_extra_utilities:
+- mysqltuner
+
+_freebsd_mysql_adminusers:
+- /root
+- "{{ freebsd_mysql_adminusers }}"
+
+freebsd_mysql_adminusers: []
+
+#This is ignored if the .mysql_secret file is set on initial install
+freebsd_mysql_changerootpw: no
+
+
+# The saucy performance settings
+freebsd_mysql_innodb_psize: 2G
+freebsd_mysql_key_buffer: 256M
+freebsd_mysql_innodb_logsize: 128M
+freebsd_mysql_innodb_read_io_threads: "{{ ansible_processor_count }}"
+freebsd_mysql_innodb_write_io_threads: "{{ ansible_processor_count }}"
+
+freebsd_mysql_innodb_data_dir: /var/db/mysql_innodb/data
+freebsd_mysql_innodb_log_dir: /var/db/mysql_innodb/log
+
+freebsd_mysql_restart_on_change: yes
+

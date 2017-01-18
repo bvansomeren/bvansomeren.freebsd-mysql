@@ -1,0 +1,9 @@
+---
+# tasks file for bvansomeren.freebsd-mysql
+
+- include: install.yml
+  tags: install
+
+- include: secure.yml
+  tags: secure
+

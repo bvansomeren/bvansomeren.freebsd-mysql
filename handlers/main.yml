@@ -1,0 +1,8 @@
+---
+# handlers file for bvansomeren.freebsd-mysql
+#
+- name: restart mysql
+  service:
+    name: "{{ freebsd_mysql_service }}"
+    state: restarted
+  when: "{{ freebsd_mysql_restart_on_change }}"

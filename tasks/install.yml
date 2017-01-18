@@ -1,0 +1,32 @@
+
+- name: ensure MySQL is installed
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ freebsd_mysql_packages }}"
+
+- name: ensure MySQL enabled in rc.conf
+  command: sysrc -f /etc/rc.conf mysql_enable=YES
+
+- name: ensure folders exist for innodb
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: 0750
+  with_items:
+  - "{{ freebsd_mysql_innodb_data_dir }}"
+  - "{{ freebsd_mysql_innodb_log_dir }}"
+
+- name: ensure my.cnf is properly setup
+  template:
+    src: my.cnf
+    dest: /usr/local/etc/mysql/my.cnf
+    backup: yes
+  notify: restart mysql
+
+- name: ensure MySQL will be started
+  service:
+    name: "{{ freebsd_mysql_service }}"
+    state: started
