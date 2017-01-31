@@ -103,7 +103,7 @@ Including an example of how to use your role (for instance, with variables passe
   	   become: yes
   	   become_user: root
   	   vars:
-    	  freebsd_mysql_rootpw: SomeLamePassword
+    	 freebsd_mysql_rootpw: SomeLamePassword
          freebsd_mysql_adminusers:
     	   - "/home/support"
       roles:
