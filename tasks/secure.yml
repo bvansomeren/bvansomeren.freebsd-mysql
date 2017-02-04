@@ -4,9 +4,6 @@
     path: /root/.mysql_secret
   register: mysql_secret
 
-- debug:
-    var: mysql_secret
-
 - name: divine the generated root password from MySQL instal
   shell: "tail -n1 /root/.mysql_secret"
   register: mysql_secret_password
