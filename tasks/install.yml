@@ -26,6 +26,16 @@
     backup: yes
   notify: restart mysql
 
+- name: ensure pip is installed for downloading MySQLdb
+  command: python -m ensurepip
+  args:
+    creates: /usr/local/bin/pip
+  when: freebsd_mysql_install_mysqldb
+
+- name: ensure pip installs MySQL-python
+  command: pip install MySQL-python
+  when: freebsd_mysql_install_mysqldb
+
 - name: ensure MySQL will be started
   service:
     name: "{{ freebsd_mysql_service }}"

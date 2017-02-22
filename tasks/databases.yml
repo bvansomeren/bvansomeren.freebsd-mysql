@@ -1,0 +1,8 @@
+#Shamelessly borrowed from https://github.com/geerlingguy/ansible-role-mysql
+- name: Ensure MySQL databases are present.
+  mysql_db:
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: present
+  with_items: "{{ freebsd_mysql_databases }}"

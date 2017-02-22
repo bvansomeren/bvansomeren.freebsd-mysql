@@ -2,12 +2,17 @@ Role Name
 =========
 
 Installs MySQL (5.7 by default) on FreeBSD.
+
 Current functionality:  
-* Install MySQL 5.7 or 5.6 from PKG (or other PKG version by overriding _freebsd\_mysql\_packages_
+* Install MySQL 5.7 or 5.6 from PKG (or other PKG version by overriding _freebsd\_mysql\_packages_  
 * Place InnoDB data and logs in other locations (for example ZFS datasets)  
 * Setup my.cnf  
 * Changes the random MySQL root password to the value of _freebsd\_mysql\_rootpw_  
-* Sets auto login for selected users by writing a .my.cnf in their home.
+* Sets auto login for selected users by writing a .my.cnf in their home.  
+* Installs Python-mysql using pip (to avoid dependency problems)  
+* Creates databases from _freebsd\_mysql\_databases_  
+* Creates users from _freebsd\_mysql\_users_  
+
 
 Requirements
 ------------
@@ -28,8 +33,8 @@ The default name of the service to enable
 freebsd_mysql_version: "57"
 freebsd_mysql_vendor: mysql
 freebsd_mysql_packages:
-- "mysql{{ freebsd_mysql_version }}-server"
-- "mysql{{ freebsd_mysql_version }}-client"
+- "{{ freebsd_mysql_vendor }}{{ freebsd_mysql_version }}-server"
+- "{{ freebsd_mysql_vendor }}{{ freebsd_mysql_version }}-client"
 - "{{ freebsd_mysql_extra_utilities }}"
 ```
 
@@ -87,12 +92,47 @@ The InnoDB log dir. 128Kb works best here for blocksize
 freebsd_mysql_restart_on_change: yes
 ```
 
-Automatically restart MySQL when making changes. Setting this to no prevents the Ansible handlers from restarting MySQL after runs.
+Automatically restart MySQL when making changes. Setting this to no prevents the Ansible handlers from restarting MySQL after runs.  
+
+```
+freebsd_mysql_databases: []
+```
+
+A list of databases to create minimum is a name (defaults to encoding: utf8 and collation: utf8_general_ci)  
+Example:  
+
+```
+freebsd_mysql_databases:
+- name: db1
+- name: db2
+- name: latin_db
+  encoding: latin1
+  collation: latin1_general_ci
+```
+
+```
+freebsd_mysql_users: []
+```
+A list of database users and their privileges. Mirrors the mysql_user module in Ansible.  
+
+Example:  
+
+```
+freebsd_mysql_users:
+    - name: example_user
+      host: "%"
+      password: DatSecurityDoh
+      priv: "db1.*:ALL/latin_db.*:ALL"
+```
+
+
 
 Dependencies
 ------------
 
-None
+This role installs the Python-mysql module for Ansible on the machines it touches. You can disable this by setting:  
+ 
+freebsd_mysql_install_mysqldb: no
 
 Example Playbook
 ----------------
@@ -104,9 +144,20 @@ Example 1 (default latest MySQL)
   	   become: yes
   	   become_user: root
   	   vars:
-    	 freebsd_mysql_rootpw: SomeLamePassword
-         freebsd_mysql_adminusers:
-    	   - "/home/support"
+        freebsd_mysql_rootpw: SomeLamePassword
+        freebsd_mysql_adminusers:
+    	  - "/home/support"
+    	  freebsd_mysql_databases:
+         - name: db1
+         - name: db2
+         - name: latin_db
+           encoding: latin1
+           collation: latin1_general_ci
+    	  freebsd_mysql_users:
+    	  - name: example_user
+    	    host: "%"
+    	    password: 0000
+    	    priv: "db1.*:ALL/latin_db.*:ALL"
       roles:
       - bvansomeren.freebsd-mysql
 

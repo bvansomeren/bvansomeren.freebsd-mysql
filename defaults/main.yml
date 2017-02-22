@@ -6,6 +6,7 @@ freebsd_mysql_service: "mysql-server"
 freebsd_mysql_version: "57"
 freebsd_mysql_vendor: mysql
 
+freebsd_mysql_python_module: py27-MySQLdb
 freebsd_mysql_packages:
 - "{{ freebsd_mysql_vendor }}{{ freebsd_mysql_version }}-server"
 - "{{ freebsd_mysql_vendor }}{{ freebsd_mysql_version }}-client"
@@ -35,4 +36,7 @@ freebsd_mysql_innodb_data_dir: /var/db/mysql_innodb/data
 freebsd_mysql_innodb_log_dir: /var/db/mysql_innodb/log
 
 freebsd_mysql_restart_on_change: yes
+freebsd_mysql_install_mysqldb: yes
 
+freebsd_mysql_databases: []
+freebsd_mysql_users: []
