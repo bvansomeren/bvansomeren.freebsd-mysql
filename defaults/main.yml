@@ -4,9 +4,11 @@
 freebsd_mysql_service: "mysql-server"
 
 freebsd_mysql_version: "57"
+freebsd_mysql_vendor: mysql
+
 freebsd_mysql_packages:
-- "mysql{{ freebsd_mysql_version }}-server"
-- "mysql{{ freebsd_mysql_version }}-client"
+- "{{ freebsd_mysql_vendor }}{{ freebsd_mysql_version }}-server"
+- "{{ freebsd_mysql_vendor }}{{ freebsd_mysql_version }}-client"
 - "{{ freebsd_mysql_extra_utilities }}"
 
 freebsd_mysql_extra_utilities:

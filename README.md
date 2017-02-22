@@ -26,13 +26,14 @@ The default name of the service to enable
 
 ```
 freebsd_mysql_version: "57"
+freebsd_mysql_vendor: mysql
 freebsd_mysql_packages:
 - "mysql{{ freebsd_mysql_version }}-server"
 - "mysql{{ freebsd_mysql_version }}-client"
 - "{{ freebsd_mysql_extra_utilities }}"
 ```
 
-Controls the packages that will be installed
+Controls the packages that will be installed. Change _freebsd\_mysql\_vendor_ to percona for the Percona version of MySQL.
 
 ```
 freebsd_mysql_extra_utilities:
@@ -96,7 +97,7 @@ None
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Example 1 (default latest MySQL)
 
     - hosts: mysql
   	   user: support
@@ -108,6 +109,20 @@ Including an example of how to use your role (for instance, with variables passe
     	   - "/home/support"
       roles:
       - bvansomeren.freebsd-mysql
+
+Example 2 (change the vendor for the latest Percona MySQL)
+
+    - hosts: percona
+  	   user: coffeesprout
+  	   become: yes
+  	   become_user: root
+  	   vars:
+    	  freebsd_mysql_rootpw: SomeLamePassword
+    	  freebsd_mysql_vendor: percona
+    	  freebsd_mysql_adminusers:
+    	  - "/home/coffeesprout"
+  	   roles:
+  	   - bvansomeren.freebsd-mysql
       
 
 License
