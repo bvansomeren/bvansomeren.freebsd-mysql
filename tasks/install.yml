@@ -22,7 +22,7 @@
 - name: ensure my.cnf is properly setup
   template:
     src: my.cnf
-    dest: /usr/local/etc/mysql/my.cnf
+    dest: /usr/local/etc/{{ freebsd_mysql_vendor}}/my.cnf
     backup: yes
   notify: restart mysql
 
