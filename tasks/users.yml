@@ -8,3 +8,5 @@
     state: "{{ item.state | default('present') }}"
     append_privs: "{{ item.append_privs | default('no') }}"
   with_items: "{{ freebsd_mysql_users }}"
+  tags:
+  - users

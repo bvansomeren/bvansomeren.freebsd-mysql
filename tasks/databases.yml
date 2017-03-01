@@ -6,3 +6,5 @@
     encoding: "{{ item.encoding | default('utf8') }}"
     state: present
   with_items: "{{ freebsd_mysql_databases }}"
+  tags:
+  - databases

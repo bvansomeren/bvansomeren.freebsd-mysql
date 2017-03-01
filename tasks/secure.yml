@@ -3,22 +3,30 @@
   stat:
     path: /root/.mysql_secret
   register: mysql_secret
+  tags:
+  - secure
 
 - name: divine the generated root password from MySQL instal
   shell: "tail -n1 /root/.mysql_secret"
   register: mysql_secret_password
   when: mysql_secret.stat.exists
+  tags:
+  - secure
 
 - name: ensure MySQL root user password is set
   command: /usr/local/bin/mysqladmin -u root -p{{ mysql_secret_password.stdout }} password "{{ freebsd_mysql_rootpw }}"
   when: freebsd_mysql_changerootpw or mysql_secret.stat.exists
   register: mysql_rootpw_set
+  tags:
+  - secure
 
 - name: ensure /root/.mysql_secret is removed when we are done
   file:
     path: /root/.mysql_secret
     state: absent
   when: mysql_rootpw_set.changed and mysql_secret.stat.exists
+  tags:
+  - secure
 
 - name: ensure users can login as root using ~/.my.cnf
   blockinfile:
@@ -30,3 +38,5 @@
       user=root
       password={{ freebsd_mysql_rootpw }}
   with_items: "{{ _freebsd_mysql_adminusers }}"
+  tags:
+  - secure

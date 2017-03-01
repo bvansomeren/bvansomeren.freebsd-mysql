@@ -4,9 +4,13 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ freebsd_mysql_packages }}"
+  tags:
+  - install
 
 - name: ensure MySQL enabled in rc.conf
   command: sysrc -f /etc/rc.conf mysql_enable=YES
+  tags:
+  - startup
 
 - name: ensure folders exist for innodb
   file:
@@ -18,6 +22,9 @@
   with_items:
   - "{{ freebsd_mysql_innodb_data_dir }}"
   - "{{ freebsd_mysql_innodb_log_dir }}"
+  tags:
+  - install
+  - dataset
 
 - name: ensure my.cnf is properly setup
   template:
@@ -25,18 +32,26 @@
     dest: /usr/local/etc/{{ freebsd_mysql_vendor}}/my.cnf
     backup: yes
   notify: restart mysql
+  tags:
+  - configure
 
 - name: ensure pip is installed for downloading MySQLdb
   command: python -m ensurepip
   args:
     creates: /usr/local/bin/pip
   when: freebsd_mysql_install_mysqldb
+  tags:
+  - install
 
 - name: ensure pip installs MySQL-python
   command: pip install MySQL-python
   when: freebsd_mysql_install_mysqldb
+  tags:
+  - install
 
 - name: ensure MySQL will be started
   service:
     name: "{{ freebsd_mysql_service }}"
     state: started
+  tags:
+  - startup
