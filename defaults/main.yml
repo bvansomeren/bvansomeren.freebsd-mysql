@@ -34,6 +34,7 @@ freebsd_mysql_innodb_write_io_threads: "{{ ansible_processor_count }}"
 
 freebsd_mysql_innodb_data_dir: /var/db/mysql_innodb/data
 freebsd_mysql_innodb_log_dir: /var/db/mysql_innodb/log
+freebsd_mysql_backup_location: "/tmp/mysql-backups"
 
 freebsd_mysql_restart_on_change: yes
 freebsd_mysql_install_mysqldb: yes

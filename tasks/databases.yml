@@ -6,5 +6,16 @@
     encoding: "{{ item.encoding | default('utf8') }}"
     state: present
   with_items: "{{ freebsd_mysql_databases }}"
+  register: databases_created
   tags:
   - databases
+
+- name: load databases that have a backup file
+  mysql_db:
+    name: "{{ item.item.name }}"
+    state: import
+    target: "{{ freebsd_mysql_backup_location }}/{{ item.item.backup_file }}"
+  with_items: "{{ databases_created.results }}"
+  when: "{{ item.item.backup_file is defined and item.changed }}"
+  tags:
+  - import

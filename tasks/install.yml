@@ -26,6 +26,15 @@
   - install
   - dataset
 
+- name: ensure backup recovery folder exists
+  file:
+    path: "{{ freebsd_mysql_backup_location }}"
+    state: directory
+    owner: mysql
+    group: mysql
+  tags:
+  - import
+
 - name: ensure my.cnf is properly setup
   template:
     src: my.cnf

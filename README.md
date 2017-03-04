@@ -10,7 +10,8 @@ Current functionality:
 * Changes the random MySQL root password to the value of _freebsd\_mysql\_rootpw_  
 * Sets auto login for selected users by writing a .my.cnf in their home.  
 * Installs Python-mysql using pip (to avoid dependency problems)  
-* Creates databases from _freebsd\_mysql\_databases_  
+* Creates databases from _freebsd\_mysql\_databases_ 
+* Optionally loads the sql file listed under the db variable when the DB is first created.   
 * Creates users from _freebsd\_mysql\_users_  
 
 
@@ -89,6 +90,13 @@ freebsd_mysql_innodb_log_dir: /var/db/mysql_innodb/log
 The InnoDB log dir. 128Kb works best here for blocksize
 
 ```
+freebsd_mysql_backup_location
+```
+
+The folder that holds your backup files for recovery; These backups can be applied as soon as a database is first created.  
+
+
+```
 freebsd_mysql_restart_on_change: yes
 ```
 
@@ -99,12 +107,15 @@ freebsd_mysql_databases: []
 ```
 
 A list of databases to create minimum is a name (defaults to encoding: utf8 and collation: utf8_general_ci)  
+When specifying _backup\_file_ you can load a sql file to be restored when the DB is first created. Such file needs to be in _freebsd\_mysql\_backup\_location_
+
 Example:  
 
 ```
 freebsd_mysql_databases:
 - name: db1
 - name: db2
+  backup_file: db2.sql
 - name: latin_db
   encoding: latin1
   collation: latin1_general_ci
