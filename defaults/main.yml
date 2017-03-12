@@ -24,6 +24,21 @@ freebsd_mysql_adminusers: []
 #This is ignored if the .mysql_secret file is set on initial install
 freebsd_mysql_changerootpw: no
 
+freebsd_mysql_config:
+- option: innodb_data_home_dir
+  value: "{{ freebsd_mysql_innodb_data_dir }}"
+- option: innodb_log_group_home_dir
+  value: "{{ freebsd_mysql_innodb_log_dir }}"
+- option: innodb_buffer_pool_size
+  value: "{{ freebsd_mysql_innodb_psize }}"
+- option: key_buffer_size
+  value: "{{ freebsd_mysql_key_buffer }}"
+- option: innodb-log-file-size
+  value: "{{ freebsd_mysql_innodb_logsize }}"
+- option: innodb_write_io_threads
+  value: "{{ freebsd_mysql_innodb_write_io_threads }}"
+- option: innodb_read_io_threads
+  value: "{{ freebsd_mysql_innodb_read_io_threads }}"
 
 # The saucy performance settings
 freebsd_mysql_innodb_psize: 2G

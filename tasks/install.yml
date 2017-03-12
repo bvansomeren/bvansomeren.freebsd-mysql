@@ -36,10 +36,12 @@
   - import
 
 - name: ensure my.cnf is properly setup
-  template:
-    src: my.cnf
+  ini_file:
     dest: /usr/local/etc/{{ freebsd_mysql_vendor}}/my.cnf
-    backup: yes
+    section: "{{ item.section | default('mysqld') }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items: "{{ freebsd_mysql_config }}"
   notify: restart mysql
   tags:
   - configure
