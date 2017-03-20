@@ -9,6 +9,8 @@
 
 - name: ensure MySQL enabled in rc.conf
   command: sysrc -f /etc/rc.conf mysql_enable=YES
+  register: sysrc_changed
+  changed_when:  "'YES -> YES' not in sysrc_changed.stdout"
   tags:
   - startup
 
@@ -57,6 +59,8 @@
 - name: ensure pip installs MySQL-python
   command: pip install MySQL-python
   when: freebsd_mysql_install_mysqldb
+  register: mysql_python_installed
+  changed_when: "'Requirement already satisfied' not in mysql_python_installed.stdout"
   tags:
   - install
 
