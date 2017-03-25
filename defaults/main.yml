@@ -56,3 +56,4 @@ freebsd_mysql_install_mysqldb: yes
 
 freebsd_mysql_databases: []
 freebsd_mysql_users: []
+freebsd_mysql_replication_users: []
