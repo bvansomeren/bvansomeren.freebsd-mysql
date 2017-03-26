@@ -25,6 +25,8 @@ freebsd_mysql_adminusers: []
 freebsd_mysql_changerootpw: no
 
 freebsd_mysql_config:
+- option: server-id
+  value: "{{ freebsd_mysql_server_id | default('1') }}"
 - option: innodb_data_home_dir
   value: "{{ freebsd_mysql_innodb_data_dir }}"
 - option: innodb_log_group_home_dir

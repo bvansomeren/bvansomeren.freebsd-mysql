@@ -12,3 +12,8 @@
 
 - include: users.yml
   tags: users
+
+- include: replication.yml
+  tags: replication
+  when: freebsd_mysql_replication_role is defined
+  static: no
