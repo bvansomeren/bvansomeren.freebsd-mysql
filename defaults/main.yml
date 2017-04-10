@@ -25,6 +25,8 @@ freebsd_mysql_adminusers: []
 freebsd_mysql_changerootpw: no
 
 freebsd_mysql_config:
+- option: default-storage-engine
+  value: InnoDB
 - option: server-id
   value: "{{ freebsd_mysql_server_id | default('1') }}"
 - option: innodb_data_home_dir
